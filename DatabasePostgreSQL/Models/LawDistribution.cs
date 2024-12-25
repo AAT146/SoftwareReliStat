@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace DatabasePostgreSQL.Models
 {
 	/// <summary>
-	/// Сущность "Закон распределения (ЗР)" (хранит названия ЗР)
+	/// Сущность "Закон распределения (ЗР)" 
+	/// (хранит названия ЗР)
 	/// </summary>
 	public class LawDistribution
 	{

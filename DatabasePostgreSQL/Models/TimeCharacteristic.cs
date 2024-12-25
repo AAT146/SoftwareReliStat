@@ -50,5 +50,12 @@ namespace DatabasePostgreSQL.Models
 		/// Ссылка на сущность "Зона надежности (ЗН)"
 		/// </summary>
 		public ReliabilityZone? ReliabilityZone { get; set; }
+
+		/// <summary>
+		/// Связь О-М между ВХ и РР.
+		/// Лист параметров.
+		/// По умолчанию пуст.
+		/// </summary>
+		public List<CalculationResult> Results = [];
 	}
 }

@@ -32,5 +32,12 @@ namespace DatabasePostgreSQL.Models
 		/// Ссылка на сущность "Закон распределения (ЗР)"
 		/// </summary>
 		public LawDistribution? LawDistribution { get; set; }
+
+		/// <summary>
+		/// Связь О-М между ПЗР и РР.
+		/// Лист параметров.
+		/// По умолчанию пуст.
+		/// </summary>
+		public List<CalculationResult> Results = [];
 	}
 }

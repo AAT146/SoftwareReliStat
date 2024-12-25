@@ -33,6 +33,11 @@ namespace DatabasePostgreSQL.Models
 		/// </summary>
 		public ReliabilityZone? ReliabilityZone { get; set; }
 
-
+		/// <summary>
+		/// Связь О-М между ЭСТ и СЭСТ.
+		/// Лист состава ЭСТ (ГО).
+		/// По умолчанию пуст.
+		/// </summary>
+		public List<StructurePowerPlant> Plants { get; set; } = [];
 	}
 }
