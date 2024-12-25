@@ -13,7 +13,8 @@ namespace DatabasePostgreSQL.Сonfigurations
 	/// Конфигурация для сущности "Результат расчета"
 	/// Интерфейс<Сущность>
 	/// </summary>
-	public class ResultsConfiguration : IEntityTypeConfiguration<CalculationResult>
+	public class ResultsConfiguration : 
+		IEntityTypeConfiguration<CalculationResult>
 	{
 		/// <summary>
 		/// Метод реализации интерфейса
@@ -24,13 +25,15 @@ namespace DatabasePostgreSQL.Сonfigurations
 			// Указывается ключ PK
 			builder.HasKey(cr => cr.Id);
 
-			// Указывается связь О-М между РР и ВХ
+			// Указывается связь О-М между результатом расчета (РР) и
+			// временной характеристикой (ВХ)
 			builder
 				.HasOne(cr => cr.TimeCharacteristic)
 				.WithMany(tc => tc.Results)
 				.HasForeignKey(cr => cr.TimeCharacteristicId);
 
-			// Указывается связь О-М между РР и ПЗР
+			// Указывается связь О-М между РР и
+			// параметром закона распределения (ПЗР)
 			builder
 				.HasOne(cr => cr.ParameterLawDistribution)
 				.WithMany(pld => pld.Results)

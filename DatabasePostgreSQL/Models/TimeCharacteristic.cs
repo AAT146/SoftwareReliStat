@@ -24,12 +24,14 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "Начальная метка времени"
 		/// </summary>
-		public string TimeStampStart { get; set; } = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+		public string TimeStampStart { get; set; } = 
+			DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
 		/// <summary>
 		/// Атрибут "Конечная метка времени"
 		/// </summary>
-		public string TimeStampEnd { get; set; } = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+		public string TimeStampEnd { get; set; } = 
+			DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
 		/// <summary>
 		/// Атрибуд "Шаг дискретизации"

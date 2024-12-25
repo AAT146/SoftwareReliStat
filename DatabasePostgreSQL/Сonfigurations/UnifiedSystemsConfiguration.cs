@@ -9,14 +9,24 @@ using System.Threading.Tasks;
 
 namespace DatabasePostgreSQL.Сonfigurations
 {
-	public class UnifiedSystemsConfiguration : IEntityTypeConfiguration<UnifiedPowerSystem>
+	/// <summary>
+	/// Конфигурация для сущности "Объединенная энергосистема"
+	/// Интерфейс<Сущность>
+	/// </summary>
+	public class UnifiedSystemsConfiguration : 
+		IEntityTypeConfiguration<UnifiedPowerSystem>
 	{
+		/// <summary>
+		/// Метод реализации интерфейса
+		/// </summary>
+		/// <param name="builder"></param>
 		public void Configure(EntityTypeBuilder<UnifiedPowerSystem> builder)
 		{
 			// Указывается ключ PK
 			builder.HasKey(ups => ups.Id);
 
-			// Указывается связь О-М между ОЭС и ЭС
+			// Указывается связь О-М между объединенной энергосистемой (ОЭС) и
+			// энергосистемой (ЭС)
 			builder
 				.HasMany(ups => ups.Systems)
 				.WithOne(ps => ps.UnifiedPowerSystem);

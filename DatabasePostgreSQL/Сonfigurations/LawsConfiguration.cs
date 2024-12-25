@@ -9,14 +9,24 @@ using System.Threading.Tasks;
 
 namespace DatabasePostgreSQL.Сonfigurations
 {
-	public class LawsConfiguration : IEntityTypeConfiguration<LawDistribution>
+	/// <summary>
+	/// Конфигурация для сущности "Закон распределения"
+	/// Интерфейс<Сущность>
+	/// </summary>
+	public class LawsConfiguration : 
+		IEntityTypeConfiguration<LawDistribution>
 	{
+		/// <summary>
+		/// Метод реализации интерфейса
+		/// </summary>
+		/// <param name="builder"></param>
 		public void Configure(EntityTypeBuilder<LawDistribution> builder)
 		{
 			// Указывается ключ PK
 			builder.HasKey(ld => ld.Id);
 
-			// Указывается связь О-М между ЗР и ПЗР
+			// Указывается связь О-М между законом распределения (ЗР) и
+			// параметром ЗР
 			builder
 				.HasMany(ld => ld.Parameters)
 				.WithOne(pld => pld.LawDistribution);

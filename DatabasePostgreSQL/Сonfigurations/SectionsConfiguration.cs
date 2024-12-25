@@ -9,25 +9,34 @@ using System.Threading.Tasks;
 
 namespace DatabasePostgreSQL.Сonfigurations
 {
+	/// <summary>
+	/// Конфигурация для сущности "Контролируемое сечение"
+	/// Интерфейс<Сущность>
+	/// </summary>
 	public class SectionsConfiguration : IEntityTypeConfiguration<ControlledSection>
 	{
+		/// <summary>
+		/// Метод реализации интерфейса
+		/// </summary>
+		/// <param name="builder"></param>
 		public void Configure(EntityTypeBuilder<ControlledSection> builder)
 		{
 			// Указывается ключ PK
 			builder.HasKey(cs => cs.Id);
 
-			// Указывается связь О-М между КС и СКС
+			// Указывается связь О-М между контролируемым сечением (КС) и
+			// составом КС
 			builder
 				.HasMany(cs => cs.StructureSections)
 				.WithOne(scs => scs.ControlledSection);
 
-			// Указывается связь О-М между КС и ЗН
+			// Указывается связь О-М между КС и зоной надежности (ЗН)
 			builder
 				.HasOne(cs => cs.ReliabilityZone)
 				.WithMany(rz => rz.Sections)
 				.HasForeignKey(cs => cs.ReliabilityZoneId);
 
-			// Указывается связь О-М между КС и ЭС
+			// Указывается связь О-М между КС и энергосистемой (ЭС)
 			builder
 				.HasOne(cs => cs.PowerSystem)
 				.WithMany(ps => ps.Sections)
