@@ -39,12 +39,5 @@ namespace DatabasePostgreSQL.Models
 		/// По умолчанию пуст.
 		/// </summary>
 		public List<ReliabilityZone> Zones { get; set; } = [];
-
-		/// <summary>
-		/// Связь О-М между ЭС и КС.
-		/// Лист контролируемых сечений.
-		/// По умолчанию пуст.
-		/// </summary>
-		public List<ControlledSection> Sections { get; set; } = [];
 	}
 }

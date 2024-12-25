@@ -1,9 +1,6 @@
 ﻿using DatabasePostgreSQL.Models;
 using DatabasePostgreSQL.Сonfigurations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-
 
 namespace DatabasePostgreSQL
 {
@@ -24,67 +21,61 @@ namespace DatabasePostgreSQL
 		/// <summary>
 		/// Коллекция сущности "Результат расчета"
 		/// </summary>
-		public DbSet<CalculationResult> Results { get; set; }
-
-		/// <summary>
-		/// Коллекция сущности "Контролируемое сечение"
-		/// </summary>
-		public DbSet<ControlledSection> Sections { get; set; }
+		public DbSet<CalculationResult> 
+			CalculationResult { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Внешний переток (межзонная связь)"
 		/// </summary>
-		public DbSet<InterZoneConnection> Connections { get; set; }
+		public DbSet<InterZoneConnection> 
+			InterZoneConnection { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Закон распределения"
 		/// </summary>
-		public DbSet<LawDistribution> Laws { get; set; }
+		public DbSet<LawDistribution> 
+			LawDistribution { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Параметры закона распределения"
 		/// </summary>
-		public DbSet<ParameterLawDistribution> Parameters { get; set; }
+		public DbSet<ParameterLawDistribution> 
+			ParameterLawDistribution { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Электростанция"
 		/// </summary>
-		public DbSet<PowerPlant> Plants { get; set; }
+		public DbSet<PowerPlant> PowerPlant { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Энергосистема"
 		/// </summary>
-		public DbSet<PowerSystem> PowerSystems { get; set; }
+		public DbSet<PowerSystem> PowerSystem { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Зона надежности"
 		/// </summary>
-		public DbSet<ReliabilityZone> Zones { get; set; }
+		public DbSet<ReliabilityZone> ReliabilityZone { get; set; }
 
 		/// <summary>
-		/// Коллекция сущности "Состав КС"
+		/// Коллекция сущности "Характеристика МЗС"
 		/// </summary>
-		public DbSet<StructureControlledSection> StructureSections { get; set; }
-
-		/// <summary>
-		/// Коллекция сущности "Состав МЗС"
-		/// </summary>
-		public DbSet<StructureInterZoneConnection> StructureConnections { get; set; }
+		public DbSet<StructureInterZoneConnection> StructureInterZoneConnection { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Состав ЭСТ"
 		/// </summary>
-		public DbSet<StructurePowerPlant> StructurePlants { get; set; }
+		public DbSet<StructurePowerPlant> StructurePowerPlant { get; set; }
 
 		/// <summary>
 		/// Коллекция сущности "Временная характеристика"
 		/// </summary>
-		public DbSet<TimeCharacteristic> Times { get; set; }
+		public DbSet<TimeCharacteristic> TimeCharacteristic { get; set; }
 
 		/// <summary>
 		/// Состав коллекции "Объединенная энергосистема"
 		/// </summary>
-		public DbSet<UnifiedPowerSystem> UnifiedSystems { get; set; }
+		public DbSet<UnifiedPowerSystem> UnifiedPowerSystem { get; set; }
 
 		/// <summary>
 		/// Метод: применение конфигураций 
@@ -98,32 +89,13 @@ namespace DatabasePostgreSQL
 			modelBuilder.ApplyConfiguration(new PlantsConfiguration());
 			modelBuilder.ApplyConfiguration(new PowerSystemsConfiguration());
 			modelBuilder.ApplyConfiguration(new ResultsConfiguration());
-			modelBuilder.ApplyConfiguration(new SectionsConfiguration());
 			modelBuilder.ApplyConfiguration(new StructureConnectionsConfiguration());
 			modelBuilder.ApplyConfiguration(new StructurePlantsConfiguration());
-			modelBuilder.ApplyConfiguration(new StructureSectionsConfiguration());
 			modelBuilder.ApplyConfiguration(new TimesConfiguration());
 			modelBuilder.ApplyConfiguration(new UnifiedSystemsConfiguration());
 			modelBuilder.ApplyConfiguration(new ZonesConfiguration());
 
 			base.OnModelCreating(modelBuilder);
-		}
-
-		/// <summary>
-		/// Метод: подключение к базе данных PostgreSQL
-		/// </summary>
-		/// <param name="optionsBuilder"></param>
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)
-			{
-				var configuration = new ConfigurationBuilder()
-					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("appsettings.json")
-					.Build();
-
-				optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-			}
 		}
 	}
 }

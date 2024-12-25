@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DatabasePostgreSQL.Сonfigurations
 {
 	/// <summary>
-	/// Конфигурация для сущности "Состав межзонной связи"
+	/// Конфигурация для сущности "Характеристика межзонной связи"
 	/// Интерфейс<Сущность>
 	/// </summary>
 	public class StructureConnectionsConfiguration :

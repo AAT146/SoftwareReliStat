@@ -3,6 +3,7 @@ using System;
 using DatabasePostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabasePostgreSQL.Migrations
 {
     [DbContext(typeof(DatabaseDbContext))]
-    partial class DatabaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241225121442_InitialCreate1")]
+    partial class InitialCreate1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,32 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("TimeCharacteristicId");
 
-                    b.ToTable("CalculationResult");
+                    b.ToTable("Results");
+                });
+
+            modelBuilder.Entity("DatabasePostgreSQL.Models.ControlledSection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PowerSystemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReliabilityZoneId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PowerSystemId");
+
+                    b.HasIndex("ReliabilityZoneId");
+
+                    b.ToTable("Sections");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.InterZoneConnection", b =>
@@ -69,7 +97,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("ReliabilityZoneId");
 
-                    b.ToTable("InterZoneConnection");
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.LawDistribution", b =>
@@ -84,7 +112,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LawDistribution");
+                    b.ToTable("Laws");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.ParameterLawDistribution", b =>
@@ -104,7 +132,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("LawDistributionId");
 
-                    b.ToTable("ParameterLawDistribution");
+                    b.ToTable("Parameters");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.PowerPlant", b =>
@@ -124,7 +152,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("ReliabilityZoneId");
 
-                    b.ToTable("PowerPlant");
+                    b.ToTable("Plants");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.PowerSystem", b =>
@@ -144,7 +172,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("UnifiedPowerSystemId");
 
-                    b.ToTable("PowerSystem");
+                    b.ToTable("PowerSystems");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.ReliabilityZone", b =>
@@ -164,7 +192,31 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("PowerSystemId");
 
-                    b.ToTable("ReliabilityZone");
+                    b.ToTable("Zones");
+                });
+
+            modelBuilder.Entity("DatabasePostgreSQL.Models.StructureControlledSection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ControlledSectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Uid")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ControlledSectionId");
+
+                    b.ToTable("StructureSections");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.StructureInterZoneConnection", b =>
@@ -176,26 +228,11 @@ namespace DatabasePostgreSQL.Migrations
                     b.Property<Guid>("InterZoneConnectionId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsControlledSection")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("TitleObject")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TitleSection")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TypeObject")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UidObject")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UidSection")
+                    b.Property<string>("Uid")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -203,7 +240,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("InterZoneConnectionId");
 
-                    b.ToTable("StructureInterZoneConnection");
+                    b.ToTable("StructureConnections");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.StructurePowerPlant", b =>
@@ -227,7 +264,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("PowerPlantId");
 
-                    b.ToTable("StructurePowerPlant");
+                    b.ToTable("StructurePlants");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.TimeCharacteristic", b =>
@@ -260,7 +297,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasIndex("ReliabilityZoneId");
 
-                    b.ToTable("TimeCharacteristic");
+                    b.ToTable("Times");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.UnifiedPowerSystem", b =>
@@ -275,7 +312,7 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UnifiedPowerSystem");
+                    b.ToTable("UnifiedSystems");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.CalculationResult", b =>
@@ -295,6 +332,25 @@ namespace DatabasePostgreSQL.Migrations
                     b.Navigation("ParameterLawDistribution");
 
                     b.Navigation("TimeCharacteristic");
+                });
+
+            modelBuilder.Entity("DatabasePostgreSQL.Models.ControlledSection", b =>
+                {
+                    b.HasOne("DatabasePostgreSQL.Models.PowerSystem", "PowerSystem")
+                        .WithMany("Sections")
+                        .HasForeignKey("PowerSystemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatabasePostgreSQL.Models.ReliabilityZone", "ReliabilityZone")
+                        .WithMany("Sections")
+                        .HasForeignKey("ReliabilityZoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PowerSystem");
+
+                    b.Navigation("ReliabilityZone");
                 });
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.InterZoneConnection", b =>
@@ -352,6 +408,17 @@ namespace DatabasePostgreSQL.Migrations
                     b.Navigation("PowerSystem");
                 });
 
+            modelBuilder.Entity("DatabasePostgreSQL.Models.StructureControlledSection", b =>
+                {
+                    b.HasOne("DatabasePostgreSQL.Models.ControlledSection", "ControlledSection")
+                        .WithMany("StructureSections")
+                        .HasForeignKey("ControlledSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ControlledSection");
+                });
+
             modelBuilder.Entity("DatabasePostgreSQL.Models.StructureInterZoneConnection", b =>
                 {
                     b.HasOne("DatabasePostgreSQL.Models.InterZoneConnection", "InterZoneConnection")
@@ -385,6 +452,11 @@ namespace DatabasePostgreSQL.Migrations
                     b.Navigation("ReliabilityZone");
                 });
 
+            modelBuilder.Entity("DatabasePostgreSQL.Models.ControlledSection", b =>
+                {
+                    b.Navigation("StructureSections");
+                });
+
             modelBuilder.Entity("DatabasePostgreSQL.Models.InterZoneConnection", b =>
                 {
                     b.Navigation("StructureConnections");
@@ -407,6 +479,8 @@ namespace DatabasePostgreSQL.Migrations
 
             modelBuilder.Entity("DatabasePostgreSQL.Models.PowerSystem", b =>
                 {
+                    b.Navigation("Sections");
+
                     b.Navigation("Zones");
                 });
 
@@ -415,6 +489,8 @@ namespace DatabasePostgreSQL.Migrations
                     b.Navigation("Connections");
 
                     b.Navigation("PowerPlants");
+
+                    b.Navigation("Sections");
 
                     b.Navigation("TimeCharacteristics");
                 });

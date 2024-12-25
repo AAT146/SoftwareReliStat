@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace DatabasePostgreSQL.Models
 {
 	/// <summary>
-	/// Сущность "Состав межзонной связи (СМЗС)"
-	/// (хранит названия и UID ЛЭП, входящих в МЗС)
+	/// Сущность "Характеристика межзонной связи (ХМЗС)"
+	/// (хранит информацию об объектах МЗС)
 	/// </summary>
 	public class StructureInterZoneConnection
 	{
 		/// <summary>
-		/// Атрибут "ID ЛЭП" (PK).
+		/// Атрибут "ID ХМЗС" (PK).
 		/// </summary>
 		public Guid Id { get; set; }
 
@@ -23,16 +23,40 @@ namespace DatabasePostgreSQL.Models
 		public Guid InterZoneConnectionId { get; set; }
 
 		/// <summary>
-		/// Атрибут "Название ЛЭП в МЗС".
+		/// Атрибут "Тип объекта в МЗС".
 		/// По умолчанию пустая строка.
 		/// </summary>
-		public string Title { get; set; } = string.Empty;
+		public string TypeObject { get; set; } = string.Empty;
 
 		/// <summary>
-		/// Атрибут "UID измерения (ЛЭП к МЗС)".
+		/// Атрибут "Название объекта в МЗС".
 		/// По умолчанию пустая строка.
 		/// </summary>
-		public string Uid { get; set; } = string.Empty;
+		public string TitleObject { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Атрибут "UID измерения (Pij по ЛЭП)".
+		/// По умолчанию пустая строка.
+		/// </summary>
+		public string UidObject { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Атрибут "Принадлежность к КС".
+		/// По умолчанию false.
+		/// </summary>
+		public bool IsControlledSection { get; set; } = false;
+
+		/// <summary>
+		/// Атрибут "Название КС".
+		/// По умолчанию пустая строка.
+		/// </summary>
+		public string TitleSection { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Атрибут "UID измерения (МДП КС)".
+		/// По умолчанию пустая строка.
+		/// </summary>
+		public string UidSection { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Ссылка на сущность "Внешний переток (межзонная связь, МЗС)"

@@ -26,7 +26,7 @@ namespace DatabasePostgreSQL.Сonfigurations
 			builder.HasKey(izc => izc.Id);
 
 			// Указывается связь О-М между межзонной связью (МЗС) и
-			// составом МЗС
+			// характеристикой МЗС
 			builder
 				.HasMany(izc => izc.StructureConnections)
 				.WithOne(sizc => sizc.InterZoneConnection);

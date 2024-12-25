@@ -49,12 +49,6 @@ namespace DatabasePostgreSQL.Сonfigurations
 			builder
 				.HasMany(rz => rz.Connections)
 				.WithOne(izc => izc.ReliabilityZone);
-
-			// Указывается связь О-М между ЗН и
-			// контролируемым сечением (КС)
-			builder
-				.HasMany(rz => rz.Sections)
-				.WithOne(izc => izc.ReliabilityZone);
 		}
 	}
 }

@@ -41,13 +41,6 @@ namespace DatabasePostgreSQL.Models
 		public List<InterZoneConnection> Connections { get; set; } = [];
 
 		/// <summary>
-		/// Связь О-М между ЗН и КС.
-		/// Лист контролируемых сечений.
-		/// По умолчанию пуст.
-		/// </summary>
-		public List<ControlledSection> Sections { get; set; } = [];
-
-		/// <summary>
 		/// Связь О-М между ЗН и ЭСТ.
 		/// Лист электростанций.
 		/// По умолчанию пуст.
