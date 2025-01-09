@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DatabasePostgreSQL.Models
 {
@@ -15,7 +12,9 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "ID Закона распределения (ID_ЗР)" (PK).
 		/// </summary>
-		public Guid Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		/// <summary>
 		/// Атрибут "Название закона распределения".

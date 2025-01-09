@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DatabasePostgreSQL.Models
 {
@@ -15,12 +12,14 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "ID генерирующего оборудования (ID_ГО)" (PK).
 		/// </summary>
-		public Guid Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		/// <summary>
 		/// Атрибут "ID Электростанции (ID_ЭСТ)" (FK).
 		/// </summary>
-		public Guid PowerPlantId { get; set; }
+		public int PowerPlantId { get; set; }
 
 		/// <summary>
 		/// Атрибут "Название ГО".

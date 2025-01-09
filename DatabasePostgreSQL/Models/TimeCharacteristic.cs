@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DatabasePostgreSQL.Models
 {
@@ -14,12 +11,14 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "ID Временной характеристики (ID_ВХ)" (PK).
 		/// </summary>
-		public Guid Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		/// <summary>
 		/// Атрибут "ID Зоны надежности (ID_ЗН)" (FK).
 		/// </summary>
-		public Guid ReliabilityZoneId { get; set; }
+		public int ReliabilityZoneId { get; set; }
 
 		/// <summary>
 		/// Атрибут "Начальная метка времени"

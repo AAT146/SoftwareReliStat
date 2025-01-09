@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabasePostgreSQL.Models
 {
@@ -14,12 +11,14 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "ID Результата расчета (ID_РР)" (PK).
 		/// </summary>
-		public Guid Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		/// <summary>
 		/// Атрибут "ID Временной характеристики (ID_ВХ)" (FK).
 		/// </summary>
-		public Guid TimeCharacteristicId { get; set; }
+		public int TimeCharacteristicId { get; set; }
 
 		/// <summary>
 		/// Атрибут "Величина отклонения".
@@ -34,7 +33,7 @@ namespace DatabasePostgreSQL.Models
 		/// <summary>
 		/// Атрибут "ID Параметра Закона Распределения (ID_ПЗР)" (FK)
 		/// </summary>
-		public Guid ParameterLawDistributionId { get; set; }
+		public int ParameterLawDistributionId { get; set; }
 
 		/// <summary>
 		/// Атрибут "Значение параметра".
