@@ -21,6 +21,12 @@ namespace DatabasePostgreSQL.Models
 		/// </summary>
 		public int PowerSystemId { get; set; }
 
+
+		/// <summary>
+		/// Атрибут "Номер ЗН".
+		/// </summary>
+		public int Number {  get; set; }
+
 		/// <summary>
 		/// Атрибут "Название ЗН".
 		/// По умолчанию пустая строка.

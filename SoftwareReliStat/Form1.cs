@@ -1,3 +1,4 @@
+using ClassLibrary;
 using DatabasePostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -68,8 +69,6 @@ namespace SoftwareReliStat
 			//MessageBox.Show($"Вы выбрали: {selectedDateTime}");
 		}
 
-		private DataTable csvData; // Для хранения данных CSV
-
 		private void CSVToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog
@@ -82,38 +81,25 @@ namespace SoftwareReliStat
 			{
 				try
 				{
-					csvData = LoadCsvFile(openFileDialog.FileName);
-					MessageBox.Show("Файл успешно загружен!", "Информация", 
-						MessageBoxButtons.OK, MessageBoxIcon.Information);
+					HandlerCSV handler = new HandlerCSV();
+					string[] data = handler.ReadCSVData(openFileDialog.FileName);
+
+					// Уведомление о сохранении данных
+					MessageBox.Show($"Данные успешно загружены! " +
+						$"Найдено строк: {data.Length}.",
+						"Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (ArgumentException ex)
+				{
+					MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+						MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}", "Ошибка", 
+					MessageBox.Show($"Неизвестная ошибка: {ex.Message}", "Ошибка",
 						MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
-		}
-
-		private DataTable LoadCsvFile(string filePath)
-		{
-			DataTable dt = new DataTable();
-
-			using (var reader = new StreamReader(filePath))
-			{
-				string[] headers = reader.ReadLine().Split(';');
-				foreach (string header in headers)
-				{
-					dt.Columns.Add(header);
-				}
-
-				while (!reader.EndOfStream)
-				{
-					string[] rows = reader.ReadLine().Split(';');
-					dt.Rows.Add(rows);
-				}
-			}
-
-			return dt;
 		}
 	}
 }

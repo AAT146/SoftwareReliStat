@@ -47,8 +47,6 @@
 			Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
 			Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
 			Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-			Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-			Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
 			toolStrip = new ToolStrip();
 			toolStripDropDownButton1 = new ToolStripDropDownButton();
 			сохранитьРезультатРасчетаToolStripMenuItem = new ToolStripMenuItem();
@@ -66,7 +64,6 @@
 			label1 = new Label();
 			guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
 			groupBox2 = new GroupBox();
-			guna2DateTimePicker2 = new Guna.UI2.WinForms.Guna2DateTimePicker();
 			guna2DateTimePicker1 = new Guna.UI2.WinForms.Guna2DateTimePicker();
 			label9 = new Label();
 			label8 = new Label();
@@ -79,6 +76,7 @@
 			guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
 			guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
 			guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+			dateTimePicker1 = new DateTimePicker();
 			toolStrip.SuspendLayout();
 			groupBox1.SuspendLayout();
 			groupBox2.SuspendLayout();
@@ -262,7 +260,7 @@
 			// 
 			// groupBox2
 			// 
-			groupBox2.Controls.Add(guna2DateTimePicker2);
+			groupBox2.Controls.Add(dateTimePicker1);
 			groupBox2.Controls.Add(guna2DateTimePicker1);
 			groupBox2.Controls.Add(label9);
 			groupBox2.Controls.Add(label8);
@@ -279,40 +277,21 @@
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Определение временного интервала";
 			// 
-			// guna2DateTimePicker2
-			// 
-			guna2DateTimePicker2.Checked = true;
-			guna2DateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-			guna2DateTimePicker2.CustomizableEdges = customizableEdges7;
-			guna2DateTimePicker2.FillColor = Color.LightSteelBlue;
-			guna2DateTimePicker2.Font = new Font("Segoe UI", 9F);
-			guna2DateTimePicker2.Format = DateTimePickerFormat.Custom;
-			guna2DateTimePicker2.Location = new Point(265, 53);
-			guna2DateTimePicker2.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
-			guna2DateTimePicker2.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
-			guna2DateTimePicker2.Name = "guna2DateTimePicker2";
-			guna2DateTimePicker2.ShadowDecoration.CustomizableEdges = customizableEdges8;
-			guna2DateTimePicker2.ShowUpDown = true;
-			guna2DateTimePicker2.Size = new Size(227, 36);
-			guna2DateTimePicker2.TabIndex = 11;
-			guna2DateTimePicker2.TextAlign = HorizontalAlignment.Center;
-			guna2DateTimePicker2.Value = new DateTime(2025, 1, 3, 0, 0, 0, 0);
-			// 
 			// guna2DateTimePicker1
 			// 
+			guna2DateTimePicker1.BackColor = Color.Transparent;
 			guna2DateTimePicker1.Checked = true;
 			guna2DateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-			guna2DateTimePicker1.CustomizableEdges = customizableEdges9;
+			guna2DateTimePicker1.CustomizableEdges = customizableEdges7;
 			guna2DateTimePicker1.FillColor = Color.LightSteelBlue;
 			guna2DateTimePicker1.Font = new Font("Segoe UI", 9F);
-			guna2DateTimePicker1.Format = DateTimePickerFormat.Custom;
+			guna2DateTimePicker1.Format = DateTimePickerFormat.Long;
 			guna2DateTimePicker1.Location = new Point(9, 53);
 			guna2DateTimePicker1.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
 			guna2DateTimePicker1.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
 			guna2DateTimePicker1.Name = "guna2DateTimePicker1";
-			guna2DateTimePicker1.ShadowDecoration.CustomizableEdges = customizableEdges10;
-			guna2DateTimePicker1.ShowUpDown = true;
-			guna2DateTimePicker1.Size = new Size(227, 36);
+			guna2DateTimePicker1.ShadowDecoration.CustomizableEdges = customizableEdges8;
+			guna2DateTimePicker1.Size = new Size(223, 36);
 			guna2DateTimePicker1.TabIndex = 10;
 			guna2DateTimePicker1.TextAlign = HorizontalAlignment.Center;
 			guna2DateTimePicker1.Value = new DateTime(2025, 1, 3, 0, 0, 0, 0);
@@ -341,7 +320,7 @@
 			// guna2ComboBox4
 			// 
 			guna2ComboBox4.BackColor = Color.Transparent;
-			guna2ComboBox4.CustomizableEdges = customizableEdges11;
+			guna2ComboBox4.CustomizableEdges = customizableEdges9;
 			guna2ComboBox4.DrawMode = DrawMode.OwnerDrawFixed;
 			guna2ComboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
 			guna2ComboBox4.FocusedColor = Color.FromArgb(94, 148, 255);
@@ -351,7 +330,7 @@
 			guna2ComboBox4.ItemHeight = 30;
 			guna2ComboBox4.Location = new Point(265, 125);
 			guna2ComboBox4.Name = "guna2ComboBox4";
-			guna2ComboBox4.ShadowDecoration.CustomizableEdges = customizableEdges12;
+			guna2ComboBox4.ShadowDecoration.CustomizableEdges = customizableEdges10;
 			guna2ComboBox4.Size = new Size(114, 36);
 			guna2ComboBox4.TabIndex = 8;
 			// 
@@ -386,7 +365,7 @@
 			// 
 			// guna2TextBox1
 			// 
-			guna2TextBox1.CustomizableEdges = customizableEdges13;
+			guna2TextBox1.CustomizableEdges = customizableEdges11;
 			guna2TextBox1.DefaultText = "";
 			guna2TextBox1.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
 			guna2TextBox1.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -401,7 +380,7 @@
 			guna2TextBox1.PasswordChar = '\0';
 			guna2TextBox1.PlaceholderText = "";
 			guna2TextBox1.SelectedText = "";
-			guna2TextBox1.ShadowDecoration.CustomizableEdges = customizableEdges14;
+			guna2TextBox1.ShadowDecoration.CustomizableEdges = customizableEdges12;
 			guna2TextBox1.Size = new Size(114, 36);
 			guna2TextBox1.TabIndex = 3;
 			// 
@@ -420,7 +399,7 @@
 			// 
 			// guna2Button3
 			// 
-			guna2Button3.CustomizableEdges = customizableEdges15;
+			guna2Button3.CustomizableEdges = customizableEdges13;
 			guna2Button3.DisabledState.BorderColor = Color.DarkGray;
 			guna2Button3.DisabledState.CustomBorderColor = Color.DarkGray;
 			guna2Button3.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -430,14 +409,14 @@
 			guna2Button3.ForeColor = Color.Black;
 			guna2Button3.Location = new Point(6, 116);
 			guna2Button3.Name = "guna2Button3";
-			guna2Button3.ShadowDecoration.CustomizableEdges = customizableEdges16;
+			guna2Button3.ShadowDecoration.CustomizableEdges = customizableEdges14;
 			guna2Button3.Size = new Size(486, 35);
 			guna2Button3.TabIndex = 2;
 			guna2Button3.Text = "Показать результат расчета";
 			// 
 			// guna2Button2
 			// 
-			guna2Button2.CustomizableEdges = customizableEdges17;
+			guna2Button2.CustomizableEdges = customizableEdges15;
 			guna2Button2.DisabledState.BorderColor = Color.DarkGray;
 			guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
 			guna2Button2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -447,14 +426,14 @@
 			guna2Button2.ForeColor = Color.Black;
 			guna2Button2.Location = new Point(6, 71);
 			guna2Button2.Name = "guna2Button2";
-			guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges18;
+			guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges16;
 			guna2Button2.Size = new Size(486, 35);
 			guna2Button2.TabIndex = 1;
 			guna2Button2.Text = "Определить закон распределения";
 			// 
 			// guna2Button1
 			// 
-			guna2Button1.CustomizableEdges = customizableEdges19;
+			guna2Button1.CustomizableEdges = customizableEdges17;
 			guna2Button1.DisabledState.BorderColor = Color.DarkGray;
 			guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
 			guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -464,10 +443,19 @@
 			guna2Button1.ForeColor = Color.Black;
 			guna2Button1.Location = new Point(6, 26);
 			guna2Button1.Name = "guna2Button1";
-			guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges20;
+			guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges18;
 			guna2Button1.Size = new Size(486, 35);
 			guna2Button1.TabIndex = 0;
 			guna2Button1.Text = "Чтение и запись данных";
+			// 
+			// dateTimePicker1
+			// 
+			dateTimePicker1.Format = DateTimePickerFormat.Time;
+			dateTimePicker1.Location = new Point(265, 53);
+			dateTimePicker1.Name = "dateTimePicker1";
+			dateTimePicker1.ShowUpDown = true;
+			dateTimePicker1.Size = new Size(205, 27);
+			dateTimePicker1.TabIndex = 11;
 			// 
 			// Form1
 			// 
@@ -526,6 +514,6 @@
 		private Guna.UI2.WinForms.Guna2Button guna2Button3;
 		private Guna.UI2.WinForms.Guna2Button guna2Button2;
 		private Guna.UI2.WinForms.Guna2DateTimePicker guna2DateTimePicker1;
-		private Guna.UI2.WinForms.Guna2DateTimePicker guna2DateTimePicker2;
+		private DateTimePicker dateTimePicker1;
 	}
 }

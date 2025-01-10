@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DatabasePostgreSQL\DatabasePostgreSQL.csproj" />
+    <ProjectReference Include="..\Model\ClassLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
