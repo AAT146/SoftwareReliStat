@@ -64,6 +64,7 @@
 			label1 = new Label();
 			guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
 			groupBox2 = new GroupBox();
+			dateTimePicker1 = new DateTimePicker();
 			guna2DateTimePicker1 = new Guna.UI2.WinForms.Guna2DateTimePicker();
 			label9 = new Label();
 			label8 = new Label();
@@ -76,7 +77,6 @@
 			guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
 			guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
 			guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-			dateTimePicker1 = new DateTimePicker();
 			toolStrip.SuspendLayout();
 			groupBox1.SuspendLayout();
 			groupBox2.SuspendLayout();
@@ -219,6 +219,7 @@
 			guna2ComboBox2.ShadowDecoration.CustomizableEdges = customizableEdges4;
 			guna2ComboBox2.Size = new Size(227, 36);
 			guna2ComboBox2.TabIndex = 3;
+			guna2ComboBox2.SelectedIndexChanged += guna2ComboBox2_SelectedIndexChanged;
 			// 
 			// label2
 			// 
@@ -276,6 +277,15 @@
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Определение временного интервала";
+			// 
+			// dateTimePicker1
+			// 
+			dateTimePicker1.Format = DateTimePickerFormat.Time;
+			dateTimePicker1.Location = new Point(265, 53);
+			dateTimePicker1.Name = "dateTimePicker1";
+			dateTimePicker1.ShowUpDown = true;
+			dateTimePicker1.Size = new Size(205, 27);
+			dateTimePicker1.TabIndex = 11;
 			// 
 			// guna2DateTimePicker1
 			// 
@@ -447,15 +457,6 @@
 			guna2Button1.Size = new Size(486, 35);
 			guna2Button1.TabIndex = 0;
 			guna2Button1.Text = "Чтение и запись данных";
-			// 
-			// dateTimePicker1
-			// 
-			dateTimePicker1.Format = DateTimePickerFormat.Time;
-			dateTimePicker1.Location = new Point(265, 53);
-			dateTimePicker1.Name = "dateTimePicker1";
-			dateTimePicker1.ShowUpDown = true;
-			dateTimePicker1.Size = new Size(205, 27);
-			dateTimePicker1.TabIndex = 11;
 			// 
 			// Form1
 			// 
