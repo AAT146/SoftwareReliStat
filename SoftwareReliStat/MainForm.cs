@@ -11,12 +11,12 @@ using TheArtOfDevHtmlRenderer.Core;
 
 namespace SoftwareReliStat
 {
-	public partial class Form1 : Form
+	public partial class MainForm : Form
 	{
 
 		private readonly DatabaseDbContext _context;
 
-		public Form1()
+		public MainForm()
 		{
 			InitializeComponent();
 
