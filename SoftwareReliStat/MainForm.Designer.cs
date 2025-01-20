@@ -103,25 +103,26 @@
 			toolStripDropDownButton1.BackColor = Color.LightSteelBlue;
 			toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
 			toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { сохранитьРезультатРасчетаToolStripMenuItem, загрузитьФайлCSVToolStripMenuItem });
-			toolStripDropDownButton1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+			toolStripDropDownButton1.Font = new Font("Segoe UI", 10F);
 			toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
 			toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
 			toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			toolStripDropDownButton1.Size = new Size(73, 29);
+			toolStripDropDownButton1.Size = new Size(72, 29);
 			toolStripDropDownButton1.Text = "Меню";
 			// 
 			// сохранитьРезультатРасчетаToolStripMenuItem
 			// 
 			сохранитьРезультатРасчетаToolStripMenuItem.Name = "сохранитьРезультатРасчетаToolStripMenuItem";
-			сохранитьРезультатРасчетаToolStripMenuItem.Size = new Size(327, 28);
+			сохранитьРезультатРасчетаToolStripMenuItem.Size = new Size(326, 28);
 			сохранитьРезультатРасчетаToolStripMenuItem.Text = "Сохранить результат расчета";
+			сохранитьРезультатРасчетаToolStripMenuItem.Click += SaveFileCSV;
 			// 
 			// загрузитьФайлCSVToolStripMenuItem
 			// 
 			загрузитьФайлCSVToolStripMenuItem.Name = "загрузитьФайлCSVToolStripMenuItem";
-			загрузитьФайлCSVToolStripMenuItem.Size = new Size(327, 28);
+			загрузитьФайлCSVToolStripMenuItem.Size = new Size(326, 28);
 			загрузитьФайлCSVToolStripMenuItem.Text = "Загрузить файл";
-			загрузитьФайлCSVToolStripMenuItem.Click += CSVToolStripMenuItem_Click;
+			загрузитьФайлCSVToolStripMenuItem.Click += UploadFileCSV;
 			// 
 			// toolStripSeparator1
 			// 
@@ -130,13 +131,13 @@
 			// 
 			// toolStripButton1
 			// 
-			toolStripButton1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+			toolStripButton1.Font = new Font("Segoe UI", 10F);
 			toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
 			toolStripButton1.ImageTransparentColor = Color.Magenta;
 			toolStripButton1.Name = "toolStripButton1";
-			toolStripButton1.Size = new Size(238, 29);
+			toolStripButton1.Size = new Size(241, 29);
 			toolStripButton1.Text = "Соединение с ОИК СК-11";
-			toolStripButton1.Click += ButtonConnectionSCADA;
+			toolStripButton1.Click += ConnectSCADA;
 			// 
 			// toolStripSeparator2
 			// 
@@ -145,13 +146,13 @@
 			// 
 			// toolStripButton2
 			// 
-			toolStripButton2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+			toolStripButton2.Font = new Font("Segoe UI", 10F);
 			toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
 			toolStripButton2.ImageTransparentColor = Color.Magenta;
 			toolStripButton2.Name = "toolStripButton2";
-			toolStripButton2.Size = new Size(198, 29);
+			toolStripButton2.Size = new Size(197, 29);
 			toolStripButton2.Text = "Соединение с СУБД";
-			toolStripButton2.Click += ButtonConnectionNpgsql;
+			toolStripButton2.Click += ConnectPostgreSQL;
 			// 
 			// groupBox1
 			// 
@@ -327,7 +328,6 @@
 			guna2DateTimePicker1.TabIndex = 10;
 			guna2DateTimePicker1.TextAlign = HorizontalAlignment.Center;
 			guna2DateTimePicker1.Value = new DateTime(2025, 1, 3, 0, 0, 0, 0);
-			guna2DateTimePicker1.ValueChanged += guna2DateTimePicker1_ValueChanged;
 			// 
 			// label9
 			// 
@@ -445,6 +445,7 @@
 			guna2Button2.Size = new Size(484, 35);
 			guna2Button2.TabIndex = 3;
 			guna2Button2.Text = "Определение законов распределения";
+			guna2Button2.Click += guna2Button2_ClickAsync;
 			// 
 			// guna2Button3
 			// 
@@ -479,8 +480,9 @@
 			guna2Button1.Size = new Size(484, 35);
 			guna2Button1.TabIndex = 0;
 			guna2Button1.Text = "Чтение и запись величин по UID";
+			guna2Button1.Click += ReadWriteDataUID;
 			// 
-			// Form1
+			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
@@ -490,9 +492,10 @@
 			Controls.Add(groupBox2);
 			Controls.Add(groupBox1);
 			Controls.Add(toolStrip);
+			FormBorderStyle = FormBorderStyle.FixedSingle;
 			Icon = (Icon)resources.GetObject("$this.Icon");
 			MaximizeBox = false;
-			Name = "Form1";
+			Name = "MainForm";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "АС Статистика";
 			toolStrip.ResumeLayout(false);
