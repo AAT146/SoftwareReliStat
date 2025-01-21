@@ -198,19 +198,22 @@ namespace ClassLibrary
 		/// <returns>Лист результатов.</returns>
 		/// <exception cref="Exception">Исключение, возникающее при не достижении 
 		/// величины maxDeviation.</exception>
-		public static List<ClusterAnalysisResult> AnalyzeDistribution(double[] data, double maxDeviation, IProgress<int> progress)
+		public static List<ClusterAnalysisResult> AnalyzeDistribution(
+			double[] data, 
+			double maxDeviation, 
+			IProgress<int> progress)
 		{
 			// Шаг прогресса
 			int totalSteps = 6; // Этапы анализа
 			int currentStep = 0;
 
 			// Определение оптимального числа кластеров
-			progress?.Report((++currentStep * 100) / totalSteps);
 			int optimalK = FindOptimalNumberCluster(data);
+			progress?.Report((++currentStep * 100) / totalSteps);
 
 			// Кластеризация данных
-			progress?.Report((++currentStep * 100) / totalSteps);
 			var (clusters, centroids) = ClusterData(data, optimalK);
+			progress?.Report((++currentStep * 100) / totalSteps);
 
 			var results = new List<ClusterAnalysisResult>();
 			var distributions = new List<object>();
@@ -219,15 +222,14 @@ namespace ClassLibrary
 			// Анализ кластеров
 			foreach (var cluster in clusters)
 			{
-				progress?.Report((++currentStep * 100) / (totalSteps + clusters.Count)); // Прогресс внутри цикла
 				var (bestDist, bestParams, bestStat) = FitDistribution(cluster);
 				distributions.Add(bestParams);
 				stats.Add(bestStat);
+				progress?.Report((++currentStep * 100) / (totalSteps + clusters.Count));
 			}
 
-			// Оптимизация весов
-			progress?.Report((++currentStep * 100) / totalSteps);
 			var (weights, deviation) = OptimizeWeights(data, clusters, distributions);
+			progress?.Report((++currentStep * 100) / totalSteps);
 
 			if (deviation > maxDeviation)
 			{
@@ -236,7 +238,6 @@ namespace ClassLibrary
 			}
 
 			// Формирование результатов
-			progress?.Report((++currentStep * 100) / totalSteps);
 			for (int i = 0; i < clusters.Count; i++)
 			{
 				string paramsDescription = distributions[i] switch
@@ -256,6 +257,8 @@ namespace ClassLibrary
 					Parameters = paramsDescription,
 					Deviation = stats[i]
 				});
+
+				progress?.Report((++currentStep * 100) / totalSteps);
 			}
 
 			// Финальное уведомление о завершении

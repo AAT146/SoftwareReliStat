@@ -40,8 +40,10 @@
 			guna2ProgressBar1.CustomizableEdges = customizableEdges1;
 			guna2ProgressBar1.Location = new Point(8, 35);
 			guna2ProgressBar1.Name = "guna2ProgressBar1";
+			guna2ProgressBar1.ProgressColor = Color.LightSteelBlue;
+			guna2ProgressBar1.ProgressColor2 = Color.LightSteelBlue;
 			guna2ProgressBar1.ShadowDecoration.CustomizableEdges = customizableEdges2;
-			guna2ProgressBar1.Size = new Size(326, 22);
+			guna2ProgressBar1.Size = new Size(330, 30);
 			guna2ProgressBar1.TabIndex = 0;
 			guna2ProgressBar1.Text = "guna2ProgressBar1";
 			guna2ProgressBar1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
@@ -52,15 +54,16 @@
 			label1.Font = new Font("Segoe UI", 9F);
 			label1.Location = new Point(8, 9);
 			label1.Name = "label1";
-			label1.Size = new Size(159, 20);
+			label1.Size = new Size(72, 20);
 			label1.TabIndex = 1;
-			label1.Text = "Выполнение расчета:";
+			label1.Text = "Процесс:";
 			// 
 			// ProgressDialog
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(343, 96);
+			BackColor = Color.AliceBlue;
+			ClientSize = new Size(347, 74);
 			Controls.Add(label1);
 			Controls.Add(guna2ProgressBar1);
 			Icon = (Icon)resources.GetObject("$this.Icon");

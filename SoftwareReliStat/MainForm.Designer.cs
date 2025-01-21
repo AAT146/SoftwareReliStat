@@ -94,7 +94,7 @@
 			toolStrip.Location = new Point(0, 0);
 			toolStrip.Name = "toolStrip";
 			toolStrip.Padding = new Padding(0);
-			toolStrip.Size = new Size(1040, 32);
+			toolStrip.Size = new Size(891, 32);
 			toolStrip.TabIndex = 0;
 			toolStrip.Text = "Главная панель";
 			// 
@@ -166,7 +166,7 @@
 			groupBox1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 			groupBox1.Location = new Point(12, 47);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(1016, 170);
+			groupBox1.Size = new Size(869, 170);
 			groupBox1.TabIndex = 1;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "Определение зоны надежности";
@@ -204,7 +204,7 @@
 			guna2ComboBox3.Location = new Point(6, 126);
 			guna2ComboBox3.Name = "guna2ComboBox3";
 			guna2ComboBox3.ShadowDecoration.CustomizableEdges = customizableEdges2;
-			guna2ComboBox3.Size = new Size(1004, 36);
+			guna2ComboBox3.Size = new Size(856, 36);
 			guna2ComboBox3.TabIndex = 4;
 			// 
 			// guna2ComboBox2
@@ -218,10 +218,10 @@
 			guna2ComboBox2.Font = new Font("Segoe UI", 10F);
 			guna2ComboBox2.ForeColor = Color.Black;
 			guna2ComboBox2.ItemHeight = 30;
-			guna2ComboBox2.Location = new Point(520, 55);
+			guna2ComboBox2.Location = new Point(452, 55);
 			guna2ComboBox2.Name = "guna2ComboBox2";
 			guna2ComboBox2.ShadowDecoration.CustomizableEdges = customizableEdges4;
-			guna2ComboBox2.Size = new Size(490, 36);
+			guna2ComboBox2.Size = new Size(410, 36);
 			guna2ComboBox2.TabIndex = 3;
 			guna2ComboBox2.SelectedIndexChanged += guna2ComboBox2_SelectedIndexChanged;
 			// 
@@ -229,7 +229,7 @@
 			// 
 			label2.AutoSize = true;
 			label2.Font = new Font("Segoe UI", 10F);
-			label2.Location = new Point(520, 29);
+			label2.Location = new Point(452, 29);
 			label2.Name = "label2";
 			label2.Size = new Size(129, 23);
 			label2.TabIndex = 2;
@@ -251,6 +251,7 @@
 			guna2ComboBox1.CustomizableEdges = customizableEdges5;
 			guna2ComboBox1.DrawMode = DrawMode.OwnerDrawFixed;
 			guna2ComboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+			guna2ComboBox1.Enabled = false;
 			guna2ComboBox1.FocusedColor = SystemColors.ActiveCaption;
 			guna2ComboBox1.FocusedState.BorderColor = SystemColors.ActiveCaption;
 			guna2ComboBox1.Font = new Font("Segoe UI", 10F);
@@ -259,7 +260,7 @@
 			guna2ComboBox1.Location = new Point(6, 55);
 			guna2ComboBox1.Name = "guna2ComboBox1";
 			guna2ComboBox1.ShadowDecoration.CustomizableEdges = customizableEdges6;
-			guna2ComboBox1.Size = new Size(490, 36);
+			guna2ComboBox1.Size = new Size(410, 36);
 			guna2ComboBox1.TabIndex = 0;
 			guna2ComboBox1.SelectedIndexChanged += guna2ComboBox1_SelectedIndexChanged;
 			// 
@@ -277,7 +278,7 @@
 			groupBox2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 			groupBox2.Location = new Point(12, 223);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new Size(496, 182);
+			groupBox2.Size = new Size(470, 182);
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Определение временного интервала";
@@ -358,7 +359,7 @@
 			guna2ComboBox4.FocusedColor = Color.LightSteelBlue;
 			guna2ComboBox4.FocusedState.BorderColor = Color.LightSteelBlue;
 			guna2ComboBox4.Font = new Font("Segoe UI", 10F);
-			guna2ComboBox4.ForeColor = Color.FromArgb(68, 88, 112);
+			guna2ComboBox4.ForeColor = Color.Black;
 			guna2ComboBox4.ItemHeight = 30;
 			guna2ComboBox4.Location = new Point(298, 137);
 			guna2ComboBox4.Name = "guna2ComboBox4";
@@ -405,6 +406,7 @@
 			guna2TextBox1.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
 			guna2TextBox1.FocusedState.BorderColor = SystemColors.ActiveCaption;
 			guna2TextBox1.Font = new Font("Segoe UI", 9F);
+			guna2TextBox1.ForeColor = Color.Black;
 			guna2TextBox1.HoverState.BorderColor = SystemColors.ActiveCaption;
 			guna2TextBox1.Location = new Point(298, 56);
 			guna2TextBox1.Margin = new Padding(3, 4, 3, 4);
@@ -422,9 +424,9 @@
 			groupBox3.Controls.Add(guna2Button3);
 			groupBox3.Controls.Add(guna2Button1);
 			groupBox3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-			groupBox3.Location = new Point(532, 223);
+			groupBox3.Location = new Point(498, 223);
 			groupBox3.Name = "groupBox3";
-			groupBox3.Size = new Size(496, 182);
+			groupBox3.Size = new Size(383, 182);
 			groupBox3.TabIndex = 3;
 			groupBox3.TabStop = false;
 			groupBox3.Text = "Управление";
@@ -442,10 +444,10 @@
 			guna2Button2.Location = new Point(6, 85);
 			guna2Button2.Name = "guna2Button2";
 			guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges16;
-			guna2Button2.Size = new Size(484, 35);
+			guna2Button2.Size = new Size(370, 35);
 			guna2Button2.TabIndex = 3;
 			guna2Button2.Text = "Определение законов распределения";
-			guna2Button2.Click += guna2Button2_ClickAsync;
+			guna2Button2.Click += DetermineDistributionLaw;
 			// 
 			// guna2Button3
 			// 
@@ -460,7 +462,7 @@
 			guna2Button3.Location = new Point(6, 137);
 			guna2Button3.Name = "guna2Button3";
 			guna2Button3.ShadowDecoration.CustomizableEdges = customizableEdges18;
-			guna2Button3.Size = new Size(484, 35);
+			guna2Button3.Size = new Size(370, 35);
 			guna2Button3.TabIndex = 2;
 			guna2Button3.Text = "Отображение результатов расчета";
 			// 
@@ -471,13 +473,14 @@
 			guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
 			guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
 			guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+			guna2Button1.Enabled = false;
 			guna2Button1.FillColor = Color.LightSteelBlue;
 			guna2Button1.Font = new Font("Segoe UI", 10F);
 			guna2Button1.ForeColor = Color.Black;
 			guna2Button1.Location = new Point(6, 30);
 			guna2Button1.Name = "guna2Button1";
 			guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges20;
-			guna2Button1.Size = new Size(484, 35);
+			guna2Button1.Size = new Size(370, 35);
 			guna2Button1.TabIndex = 0;
 			guna2Button1.Text = "Чтение и запись величин по UID";
 			guna2Button1.Click += ReadWriteDataUID;
@@ -487,7 +490,7 @@
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.AliceBlue;
-			ClientSize = new Size(1040, 416);
+			ClientSize = new Size(891, 416);
 			Controls.Add(groupBox3);
 			Controls.Add(groupBox2);
 			Controls.Add(groupBox1);

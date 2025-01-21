@@ -21,7 +21,7 @@ namespace View
 			guna2ProgressBar1.Minimum = 0;
 			guna2ProgressBar1.Maximum = 100;
 			guna2ProgressBar1.Value = 0;
-			label1.Text = "Прогресс: 0%";
+			label1.Text = "Выполнение процесса: 0%";
 		}
 
 		public void UpdateProgress(int percent)
@@ -33,7 +33,7 @@ namespace View
 			else
 			{
 				guna2ProgressBar1.Value = percent;
-				label1.Text = $"Прогресс: {percent}%";
+				label1.Text = $"Выполнение процесса: {percent}%";
 			}
 		}
 	}

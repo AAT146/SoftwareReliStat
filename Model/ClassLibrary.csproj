@@ -4,11 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <appSettings>
+		  <add key="inputFileNameRel" value=""/>
+		  <add key="compareFileNameRel" value=""/>
+		  <add key="readFileNameRel" value=""/>
+		  <add key="ck11EndPoint" value="https://ck11-odu-23b.pl23b.lcl"/>
+		  <add key="ck11TokenEndPoint" value=":9443/auth/nego/token"/>
+		  <add key="ck11MeasurReadEndPoint" value="/api/public/measurement-values/v2.1/numeric/data/get-table"/>
+		  <add key="ck11MeasurReadEndPoint" value="/api/public/measurement-values/v2.0/numeric/data/get-table"/>
+		  <add key="obmVariables" value="оТИ35"/>
+	  </appSettings>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -9,12 +9,14 @@ using System.Data;
 using System.Windows.Forms;
 using TheArtOfDevHtmlRenderer.Core;
 using View;
+using Newtonsoft.Json;
 using static ClassLibrary.DistributionAnalyzer;
 
 namespace SoftwareReliStat
 {
 	public partial class MainForm : Form
 	{
+		private HandlerSCADA currentToken;
 
 		private readonly DatabaseDbContext _context;
 
@@ -28,6 +30,14 @@ namespace SoftwareReliStat
 
 			// Загружаем данные
 			LoadUnifiedPowerSystems();
+
+			// Заполняем комбобокс единиц измерения
+			guna2ComboBox4.Items.AddRange(new[] { "Секунда", "Минута", "Час", "Месяц" });
+			//guna2ComboBox4.SelectedIndex = 1; // Устанавливаем значение по умолчанию
+
+			// Подписываемся на события
+			guna2TextBox1.TextChanged += (s, e) => ProcessDiscreteStep();
+			guna2ComboBox4.SelectedIndexChanged += (s, e) => ProcessDiscreteStep();
 		}
 
 		/// <summary>
@@ -126,6 +136,9 @@ namespace SoftwareReliStat
 					// Уведомление о успешном соединении
 					MessageBox.Show("Соединение с базой данных установлено!", "Уведомление",
 						MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+					// Включаем поле guna2ComboBox1
+					guna2ComboBox1.Enabled = true;
 				}
 			}
 			catch (Exception ex)
@@ -143,7 +156,19 @@ namespace SoftwareReliStat
 		/// <param name="e">Данные о событие.</param>
 		private void ConnectSCADA(object sender, EventArgs e)
 		{
+			try
+			{
+				// Установка соединения с ОИК СК-11
+				HandlerSCADA.Token currentToken = HandlerSCADA.GetToken();
+				MessageBox.Show("Соединение с ОИК СК-11 установлено.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+				// Включаем вторую кнопку
+				guna2Button1.Enabled = true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка подключения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		/// <summary>
@@ -156,7 +181,11 @@ namespace SoftwareReliStat
 		/// </summary>
 		private int[] processedData;
 
+
+
 		private List<ClusterAnalysisResult> _calculationResults; // Поле для хранения результатов
+
+		private double _discreteStepInSeconds; // Поле для хранения значения в секундах
 
 		/// <summary>
 		/// Метод загрузки данных из CSV файла.
@@ -211,23 +240,41 @@ namespace SoftwareReliStat
 		{
 			if (processedData == null)
 			{
-				MessageBox.Show("Сначала загрузите данные.");
+				MessageBox.Show("Параметры зоны надежности и\n" +
+					"временного интервала не определены.", "Уведомление",
+					MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
+			}
+
+			try
+			{
+				// Чтение данных из ОИК СК-11
+				HandlerSCADA.ReadResponse response = HandlerSCADA.GetDataFromCK11("2023-11-13T09:00:00Z", "2023-11-13T21:00:00Z", HandlerSCADA.ck11Uids);
+
+				// Обработка данных
+				//SaveDataToExcel(response);
+				MessageBox.Show("Данные успешно прочитаны и сохранены.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка чтения данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
 		/// <summary>
-		/// Обработчик действий кнопки "Определение законов распределений".
+		/// Метод определения закона распределения.
 		/// </summary>
 		/// <param name="sender">Источник события, кнопка.</param>
 		/// <param name="e">Аргументы события клика.</param>
-		private async void guna2Button2_ClickAsync(object sender, EventArgs e)
+		private async void DetermineDistributionLaw(object sender, EventArgs e)
 		{
 			// Проверка, что данные существуют
 			if (processedData == null || processedData.Length == 0)
 			{
-				MessageBox.Show("Данные отсутствуют для анализа.", "Ошибка",
-					MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Отсутствуют данные. " +
+					"Загрузите файл CSV или задайте\n" +
+					"параметры зоны надежности и временного интервала.", "Уведомление",
+					MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -240,7 +287,6 @@ namespace SoftwareReliStat
 
 			try
 			{
-
 				// Инициализация объекта для отслеживания прогресса
 				var progress = new Progress<int>(percent =>
 				{
@@ -275,15 +321,18 @@ namespace SoftwareReliStat
 		}
 
 		/// <summary>
-		/// 
+		/// Метод сохранения данных в CSV файл.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+		/// <param name="sender">Источник события, кнопка.</param>
+		/// <param name="e">Аргументы события клика.</param>
 		private void SaveFileCSV(object sender, EventArgs e)
 		{
 			if (_calculationResults == null || _calculationResults.Count == 0)
 			{
-				MessageBox.Show("Нет результатов для формирования отчета.");
+				MessageBox.Show("Результаты расчета отсутствуют.\n" +
+					"Выполните расчет по определению\n" +
+					"законов распределения.", "Уведомление",
+					MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -310,6 +359,50 @@ namespace SoftwareReliStat
 			}
 		}
 
+
+		/// <summary>
+		/// Метод обработки шага дискретизации (сохранение в сек.).
+		/// </summary>
+		private void ProcessDiscreteStep()
+		{
+			// Проверяем, что поле для шага дискретизации не пустое
+			if (double.TryParse(guna2TextBox1.Text, out double stepValue))
+			{
+				// Получаем выбранную единицу измерения
+				string selectedUnit = guna2ComboBox4.SelectedItem?.ToString();
+
+				if (!string.IsNullOrEmpty(selectedUnit))
+				{
+					double resultInSeconds = stepValue; // Значение в секундах
+
+					// Преобразование в секунды в зависимости от выбранной единицы
+					switch (selectedUnit)
+					{
+						case "Секунда":
+							resultInSeconds = stepValue;
+							break;
+						case "Минута":
+							resultInSeconds = stepValue * 60;
+							break;
+						case "Час":
+							resultInSeconds = stepValue * 3600;
+							break;
+						case "Месяц": // Условно: берём средний месяц = 30 дней
+							resultInSeconds = stepValue * 30 * 24 * 3600;
+							break;
+						default:
+							return;
+					}
+
+					// Сохраняем значение в приватное поле
+					_discreteStepInSeconds = resultInSeconds;
+
+					// Выводим результат в MessageBox для демонстрации (опционально)
+					//MessageBox.Show($"Значение в секундах: {_discreteStepInSeconds}", "Результат",
+					//	MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+			}
+		}
 
 
 		///// <summary>
