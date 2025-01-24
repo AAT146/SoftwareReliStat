@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabasePostgreSQL.Migrations
 {
     [DbContext(typeof(DatabaseDbContext))]
-    [Migration("20250124115418_InitialCreate6")]
-    partial class InitialCreate6
+    [Migration("20250124153323_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace DatabasePostgreSQL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("DeviationValue")
+                        .HasColumnType("double precision");
+
                     b.Property<int>("ParameterLawDistributionId")
                         .HasColumnType("integer");
 
@@ -40,9 +43,6 @@ namespace DatabasePostgreSQL.Migrations
 
                     b.Property<int>("TimeCharacteristicId")
                         .HasColumnType("integer");
-
-                    b.Property<double>("ValueDeviation")
-                        .HasColumnType("double precision");
 
                     b.Property<double>("WeightFactor")
                         .HasColumnType("double precision");
