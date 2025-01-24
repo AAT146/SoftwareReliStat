@@ -28,5 +28,12 @@ namespace DatabasePostgreSQL.Models
 		/// По умолчанию пуст.
 		/// </summary>
 		public List<ParameterLawDistribution> Parameters { get; set; } = [];
+
+		/// <summary>
+		/// Связь О-М между ЗР и РР.
+		/// Лист законов распределения.
+		/// По умолчанию пуст.
+		/// </summary>
+		public List<CalculationResult> CalculationResults { get; set; } = [];
 	}
 }

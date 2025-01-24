@@ -53,7 +53,7 @@ namespace ClassLibrary
 			// Единицы измерения шага времени между столбцами: секунды, дни, месяцы, года
 			public string stepUnits { get; set; }
 			// Значение шага времени между столбцами
-			public uint stepValue { get; set; }
+			public int stepValue { get; set; }
 		}
 
 		/// <summary>
@@ -120,7 +120,7 @@ namespace ClassLibrary
 		/// <param name="timeEnd"></param>
 		/// <param name="uids"></param>
 		/// <returns></returns>
-		public static ReadResponse GetDataFromCK11(string timeStart, string timeEnd, List<string> uids)
+		public static ReadResponse GetDataFromCK11(string timeStart, string timeEnd, List<string> uids, int step)
 		{
 			ServicePointManager.Expect100Continue = true;
 			ServicePointManager.DefaultConnectionLimit = 9999;
@@ -140,7 +140,7 @@ namespace ClassLibrary
 				fromTimeStamp = timeStart,
 				toTimeStamp = timeEnd,
 				stepUnits = "seconds",
-				stepValue = 300
+				stepValue = step
 			};
 
 			string requestBodyJson = JsonConvert.SerializeObject(bodyRequest);

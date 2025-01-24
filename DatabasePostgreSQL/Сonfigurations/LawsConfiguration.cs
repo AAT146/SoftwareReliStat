@@ -30,6 +30,12 @@ namespace DatabasePostgreSQL.Сonfigurations
 			builder
 				.HasMany(ld => ld.Parameters)
 				.WithOne(pld => pld.LawDistribution);
+
+			// Указывается связь О-М между законом распределения и
+			// результатом расчета
+			builder
+				.HasMany(cr => cr.CalculationResults)
+				.WithOne(ld => ld.LawDistribution);
 		}
 	}
 }

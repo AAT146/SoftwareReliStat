@@ -195,7 +195,7 @@ namespace SoftwareReliStat
 			set => calculationResults = value;
 		}
 
-		private double _discreteStepInSeconds; // Поле для хранения значения в секундах
+		
 
 		/// <summary>
 		/// Метод загрузки данных из CSV файла.
@@ -260,7 +260,7 @@ namespace SoftwareReliStat
 			{
 				// Чтение данных из ОИК СК-11
 				HandlerSCADA.ReadResponse response = HandlerSCADA.GetDataFromCK11(
-					DateTimeStart, DateTimeEnd, HandlerSCADA.ck11Uids);
+					DateTimeStart, DateTimeEnd, HandlerSCADA.ck11Uids, DiscreteStepInSeconds);
 
 				// Обработка данных
 				//SaveDataToExcel(response);
@@ -370,6 +370,16 @@ namespace SoftwareReliStat
 			}
 		}
 
+		private static int _discreteStepInSeconds; // Поле для хранения значения в секундах
+
+		/// <summary>
+		/// Публичное свойство для доступа к полю.
+		/// </summary>
+		public static int DiscreteStepInSeconds
+		{
+			get => _discreteStepInSeconds;
+			set => _discreteStepInSeconds = value;
+		}
 
 		/// <summary>
 		/// Метод обработки шага дискретизации (сохранение в сек.).
@@ -377,14 +387,14 @@ namespace SoftwareReliStat
 		private void ProcessDiscreteStep()
 		{
 			// Проверяем, что поле для шага дискретизации не пустое
-			if (double.TryParse(guna2TextBox1.Text, out double stepValue))
+			if (int.TryParse(guna2TextBox1.Text, out int stepValue))
 			{
 				// Получаем выбранную единицу измерения
 				string selectedUnit = guna2ComboBox4.SelectedItem?.ToString();
 
 				if (!string.IsNullOrEmpty(selectedUnit))
 				{
-					double resultInSeconds = stepValue; // Значение в секундах
+					int resultInSeconds = stepValue; // Значение в секундах
 
 					// Преобразование в секунды в зависимости от выбранной единицы
 					switch (selectedUnit)

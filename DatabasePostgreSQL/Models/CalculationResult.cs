@@ -21,9 +21,14 @@ namespace DatabasePostgreSQL.Models
 		public int TimeCharacteristicId { get; set; }
 
 		/// <summary>
-		/// Атрибут "Величина отклонения".
+		/// Атрибут "Кластер №"
 		/// </summary>
-		public double DeviationValue { get; set; } = 0;
+		public int Cluste {  get; set; } = 0;
+
+		/// <summary>
+		/// Атрибут "Интервал"
+		/// </summary>
+		public string Interval { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Атрибут "Весовой коэффициент".
@@ -31,14 +36,19 @@ namespace DatabasePostgreSQL.Models
 		public double WeightFactor { get; set; } = 0;
 
 		/// <summary>
-		/// Атрибут "ID Параметра Закона Распределения (ID_ПЗР)" (FK)
+		/// Атрибут "ID Закона Распределения (ID_ПЗР)" (FK)
 		/// </summary>
-		public int ParameterLawDistributionId { get; set; }
+		public int LawDistributionId { get; set; }
 
 		/// <summary>
-		/// Атрибут "Значение параметра".
+		/// Атрибут "Значение параметров".
 		/// </summary>
-		public double ParameterValue { get; set; } = 0;
+		public string ParameterValue { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Атрибут "Величина отклонения".
+		/// </summary>
+		public double ValueDeviation { get; set; } = 0;
 
 		/// <summary>
 		/// Ссылка на сущность "Временная характеристика (ВХ)"
@@ -46,8 +56,8 @@ namespace DatabasePostgreSQL.Models
 		public TimeCharacteristic? TimeCharacteristic { get; set; }
 
 		/// <summary>
-		/// Ссылка на сущность "Параметры законов распределения (ПЗР)"
+		/// Ссылка на сущность "Закон распределения (ЗР)"
 		/// </summary>
-		public ParameterLawDistribution? ParameterLawDistribution { get; set; }
+		public LawDistribution? LawDistribution { get; set; }
 	}
 }

@@ -33,11 +33,11 @@ namespace DatabasePostgreSQL.Сonfigurations
 				.HasForeignKey(cr => cr.TimeCharacteristicId);
 
 			// Указывается связь О-М между РР и
-			// параметром закона распределения (ПЗР)
+			// законом распределения (ЗР)
 			builder
-				.HasOne(cr => cr.ParameterLawDistribution)
-				.WithMany(pld => pld.Results)
-				.HasForeignKey(cr => cr.ParameterLawDistributionId);
+				.HasOne(cr => cr.LawDistribution)
+				.WithMany(ld => ld.CalculationResults)
+				.HasForeignKey(cr => cr.LawDistributionId);
 		}
 	}
 }

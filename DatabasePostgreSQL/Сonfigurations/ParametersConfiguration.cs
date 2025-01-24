@@ -25,13 +25,8 @@ namespace DatabasePostgreSQL.Сonfigurations
 			// Указывается ключ PK
 			builder.HasKey(pld => pld.Id);
 
-			// Указывается связь О-М между пааметром закона распределения (ПЗР) и
-			// результатом расчета (РР)
-			builder
-				.HasMany(pld => pld.Results)
-				.WithOne(rr => rr.ParameterLawDistribution);
-
-			// Указывается связь О-М между законом распределения (ЗР) и ПЗР
+			// Указывается связь О-М между законом распределения (ЗР) и
+			// параметрами ЗР
 			builder
 				.HasOne(pld => pld.LawDistribution)
 				.WithMany(ld => ld.Parameters)
