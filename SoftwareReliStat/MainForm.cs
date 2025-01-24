@@ -11,6 +11,7 @@ using TheArtOfDevHtmlRenderer.Core;
 using View;
 using Newtonsoft.Json;
 using static ClassLibrary.DistributionAnalyzer;
+using System.Globalization;
 
 namespace SoftwareReliStat
 {
@@ -183,7 +184,16 @@ namespace SoftwareReliStat
 
 
 
-		private List<ClusterAnalysisResult> _calculationResults; // Поле для хранения результатов
+		private static List<ClusterAnalysisResult> calculationResults; // Поле для хранения результатов
+
+		/// <summary>
+		/// Публичное свойство для доступа к результатам расчета.
+		/// </summary>
+		public static List<ClusterAnalysisResult> CalculationResults
+		{
+			get => calculationResults;
+			set => calculationResults = value;
+		}
 
 		private double _discreteStepInSeconds; // Поле для хранения значения в секундах
 
@@ -249,7 +259,8 @@ namespace SoftwareReliStat
 			try
 			{
 				// Чтение данных из ОИК СК-11
-				HandlerSCADA.ReadResponse response = HandlerSCADA.GetDataFromCK11("2023-11-13T09:00:00Z", "2023-11-13T21:00:00Z", HandlerSCADA.ck11Uids);
+				HandlerSCADA.ReadResponse response = HandlerSCADA.GetDataFromCK11(
+					DateTimeStart, DateTimeEnd, HandlerSCADA.ck11Uids);
 
 				// Обработка данных
 				//SaveDataToExcel(response);
@@ -283,7 +294,7 @@ namespace SoftwareReliStat
 			progressDialog.Show();
 
 			// Максимально допустимое отклонение
-			double maxDeviation = 0.1;
+			double maxDeviation = 0.25;
 
 			try
 			{
@@ -294,7 +305,7 @@ namespace SoftwareReliStat
 				});
 
 				// Вызов анализа в асинхронном потоке
-				_calculationResults = await Task.Run(() =>
+				calculationResults = await Task.Run(() =>
 					DistributionAnalyzer.AnalyzeDistribution(
 						processedData.Select(x => (double)x).ToArray(),
 						maxDeviation,
@@ -327,7 +338,7 @@ namespace SoftwareReliStat
 		/// <param name="e">Аргументы события клика.</param>
 		private void SaveFileCSV(object sender, EventArgs e)
 		{
-			if (_calculationResults == null || _calculationResults.Count == 0)
+			if (calculationResults == null || calculationResults.Count == 0)
 			{
 				MessageBox.Show("Результаты расчета отсутствуют.\n" +
 					"Выполните расчет по определению\n" +
@@ -348,7 +359,7 @@ namespace SoftwareReliStat
 					try
 					{
 						// Сохранение в CSV
-						HandlerCSV.WriteCSVData(_calculationResults, saveFileDialog.FileName);
+						HandlerCSV.WriteCSVData(calculationResults, saveFileDialog.FileName);
 						MessageBox.Show("Отчет успешно сохранен.");
 					}
 					catch (Exception ex)
@@ -402,6 +413,70 @@ namespace SoftwareReliStat
 					//	MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Обработчик кнопки "Отображение результатов расчета".
+		/// </summary>
+		/// <param name="sender">Источник события, кнопка.</param>
+		/// <param name="e">Аргументы события клика.</param>
+		private void DisplayCalculationResults(object sender, EventArgs e)
+		{
+			//Проверка, что результаты существуют
+			//if (calculationResults == null || calculationResults.Count == 0)
+			//{
+			//	MessageBox.Show("Нет доступных результатов для отображения.", "Уведомление",
+			//		MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			//	return;
+			//}
+
+			// Создание и отображение формы с результатами
+			var resultsForm = new View.CalculationResult();
+
+			// Передача данных в форму
+			//resultsForm.LoadData(calculationResults);
+
+			resultsForm.Show();
+		}
+
+		private static string _dateTimeSart;
+
+		private static string _dateTimeEnd;
+
+		/// <summary>
+		/// Публичное свойство для доступа к результатам расчета.
+		/// </summary>
+		public static string DateTimeStart
+		{
+			get => _dateTimeSart;
+			set => _dateTimeSart = value;
+		}
+
+		/// <summary>
+		/// Публичное свойство для доступа к результатам расчета.
+		/// </summary>
+		public static string DateTimeEnd
+		{
+			get => _dateTimeEnd;
+			set => _dateTimeEnd = value;
+		}
+
+		private void guna2DateTimePicker1_ValueChanged(object sender, EventArgs e)
+		{
+			// Получаем дату и время, выбранные пользователем
+			DateTime selectedDate = guna2DateTimePicker1.Value;
+
+			// Преобразуем дату и время в формат "yyyy-MM-ddTHH:mm:ssZ"
+			_dateTimeSart = selectedDate.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+		}
+
+		private void guna2DateTimePicker2_ValueChanged(object sender, EventArgs e)
+		{
+			// Получаем дату и время, выбранные пользователем
+			DateTime selectedDate = guna2DateTimePicker1.Value;
+
+			// Преобразуем дату и время в формат "yyyy-MM-ddTHH:mm:ssZ"
+			_dateTimeEnd = selectedDate.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
 		}
 
 

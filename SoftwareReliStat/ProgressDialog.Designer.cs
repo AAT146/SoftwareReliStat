@@ -62,6 +62,8 @@
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
+			FormBorderStyle = FormBorderStyle.FixedSingle;
+			StartPosition = FormStartPosition.CenterScreen;
 			BackColor = Color.AliceBlue;
 			ClientSize = new Size(347, 74);
 			Controls.Add(label1);

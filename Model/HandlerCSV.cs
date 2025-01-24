@@ -107,16 +107,17 @@ namespace ClassLibrary
 			var sb = new StringBuilder();
 
 			// Заголовок CSV
-			sb.AppendLine("ClusterNumber,Interval,Weight,Distribution,Parameters,Deviation");
+			sb.AppendLine("Кластер №;Весовой коэффициент;Закон распределения;" +
+				"Параметры закона распределения;Величина отклонения");
 
 			// Данные
 			foreach (var result in results)
 			{
-				sb.AppendLine($"{result.ClusterNumber}," +
-							  $"{result.Interval}," +
-							  $"{result.Weight}," +
-							  $"{result.Distribution}," +
-							  $"{result.Parameters}," +
+				sb.AppendLine($"{result.ClusterNumber};" +
+							  //$"{result.Interval};" +
+							  $"{result.Weight};" +
+							  $"{result.Distribution};" +
+							  $"{result.Parameters};" +
 							  $"{result.Deviation}");
 			}
 

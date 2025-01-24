@@ -164,7 +164,7 @@
 			groupBox1.Controls.Add(label1);
 			groupBox1.Controls.Add(guna2ComboBox1);
 			groupBox1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-			groupBox1.Location = new Point(12, 47);
+			groupBox1.Location = new Point(12, 43);
 			groupBox1.Name = "groupBox1";
 			groupBox1.Size = new Size(869, 170);
 			groupBox1.TabIndex = 1;
@@ -306,6 +306,7 @@
 			guna2DateTimePicker2.TextAlign = HorizontalAlignment.Center;
 			guna2DateTimePicker2.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 			guna2DateTimePicker2.Value = new DateTime(2025, 1, 3, 0, 0, 0, 0);
+			guna2DateTimePicker2.ValueChanged += guna2DateTimePicker2_ValueChanged;
 			// 
 			// guna2DateTimePicker1
 			// 
@@ -329,6 +330,7 @@
 			guna2DateTimePicker1.TabIndex = 10;
 			guna2DateTimePicker1.TextAlign = HorizontalAlignment.Center;
 			guna2DateTimePicker1.Value = new DateTime(2025, 1, 3, 0, 0, 0, 0);
+			guna2DateTimePicker1.ValueChanged += guna2DateTimePicker1_ValueChanged;
 			// 
 			// label9
 			// 
@@ -465,6 +467,7 @@
 			guna2Button3.Size = new Size(370, 35);
 			guna2Button3.TabIndex = 2;
 			guna2Button3.Text = "Отображение результатов расчета";
+			guna2Button3.Click += DisplayCalculationResults;
 			// 
 			// guna2Button1
 			// 

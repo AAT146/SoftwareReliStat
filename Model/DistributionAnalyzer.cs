@@ -1,7 +1,11 @@
 ﻿using Accord.Statistics.Distributions.Univariate;
 using Accord.Math;
 using Accord.MachineLearning;
+using MathNet.Numerics;
 using Accord.Math.Optimization;
+using MathNet.Numerics.Optimization;
+using MathNet.Numerics.LinearAlgebra;
+using System.ComponentModel;
 
 namespace ClassLibrary
 {
@@ -18,48 +22,115 @@ namespace ClassLibrary
 		/// <returns>Оптимальное число кластеров.</returns>
 		public static int FindOptimalNumberCluster(double[] data, int maxK = 10)
 		{
-			var distortions = new List<double>();
+			// Начальное число кластеров
+			int k = 2;
+			bool improvement = true;
 
-			for (int k = 1; k <= maxK; k++)
+			var kmeans = new KMeans(k);
+			var clusters = kmeans.Learn(data.ToJagged());
+			int[] labels = clusters.Decide(data.ToJagged());
+			double[][] centroids = clusters.Centroids;
+
+			while (improvement && k < maxK)
 			{
-				var kmeans = new KMeans(k);
-				var clusters = kmeans.Learn(data.ToJagged());
-				var distortion = clusters.Decide(data.ToJagged())
-					.Select((cluster, i) => Math.Pow(data[i] - clusters.Centroids[cluster][0], 2))
-					.Sum();
+				improvement = false;
+				var newCentroids = new List<double[]>();
+				var newLabels = new List<int>();
+				int currentCluster = 0;
 
-				distortions.Add(distortion);
-			}
-
-			int optimalK = 1;
-			double maxDiff = 0;
-			for (int i = 1; i < distortions.Count - 1; i++)
-			{
-				double diff = distortions[i - 1] - distortions[i];
-				if (diff > maxDiff)
+				for (int i = 0; i < centroids.Length; i++)
 				{
-					maxDiff = diff;
-					optimalK = i + 1;
+					var clusterData = data.Where((_, index) => labels[index] == i).ToArray();
+
+					if (clusterData.Length < 2)
+					{
+						newCentroids.Add(centroids[i]);
+						newLabels.AddRange(Enumerable.Repeat(currentCluster++, clusterData.Length));
+						continue;
+					}
+
+					var subKMeans = new KMeans(2);
+					var subClusters = subKMeans.Learn(clusterData.ToJagged());
+					var subLabels = subClusters.Decide(clusterData.ToJagged());
+					double[][] subCentroids = subClusters.Centroids;
+
+					double bicCurrent = CalculateBIC(clusterData, new[] { centroids[i] }, new int[clusterData.Length]);
+					double bicSplit = CalculateBIC(clusterData, subCentroids, subLabels);
+
+					if (bicSplit > bicCurrent)
+					{
+						newCentroids.AddRange(subCentroids);
+						newLabels.AddRange(subLabels.Select(l => l + currentCluster));
+						currentCluster += 2;
+						improvement = true;
+					}
+					else
+					{
+						newCentroids.Add(centroids[i]);
+						newLabels.AddRange(Enumerable.Repeat(currentCluster++, clusterData.Length));
+					}
 				}
+
+				centroids = newCentroids.ToArray();
+				labels = newLabels.ToArray();
+				k = centroids.Length;
 			}
 
-			return optimalK;
+			return k;
 		}
 
 		/// <summary>
-		/// Метод кластеризации данных методом K-Means.
+		/// Вычисляет значение критерия Байеса (BIC).
+		/// </summary>
+		/// <param name="data">Массив данных.</param>
+		/// <param name="centroids">Центроиды кластеров.</param>
+		/// <param name="labels">Метки кластеров.</param>
+		/// <returns>Значение BIC.</returns>
+		private static double CalculateBIC(double[] data, double[][] centroids, int[] labels)
+		{
+			int nClusters = centroids.Length;
+			int nData = data.Length;
+
+			double logLikelihood = 0.0;
+			int totalParameters = 0;
+
+			for (int i = 0; i < nClusters; i++)
+			{
+				var clusterData = data.Where((_, index) => labels[index] == i).ToArray();
+
+				if (clusterData.Length == 0)
+					continue;
+
+				double variance = clusterData.Average(x => Math.Pow(x - centroids[i][0], 2));
+				variance = Math.Max(variance, 1e-6); // Избегаем деления на 0
+
+				logLikelihood += clusterData.Length * Math.Log(1.0 / Math.Sqrt(2 * Math.PI * variance))
+								 - clusterData.Sum(x => Math.Pow(x - centroids[i][0], 2)) / (2 * variance);
+
+				totalParameters += 1 + 1;
+			}
+
+			return logLikelihood - 0.5 * totalParameters * Math.Log(nData);
+		}
+
+		/// <summary>
+		/// Метод кластеризации данных с использованием X-Means.
 		/// </summary>
 		/// <param name="data">Массив значений.</param>
-		/// <param name="nClusters">Число кластеров.</param>
+		/// <param name="maxK">Максимальное число кластеров.</param>
 		/// <returns>Массивы кластеров; центроиды.</returns>
-		public static (List<double[]> Clusters, double[][] Centroids) ClusterData(double[] data, int nClusters)
+		public static (List<double[]> Clusters, double[][] Centroids) ClusterData(double[] data, int maxK = 20)
 		{
-			var kmeans = new KMeans(nClusters);
+			// Определяем оптимальное число кластеров с помощью X-Means
+			int optimalK = FindOptimalNumberCluster(data, maxK);
+
+			// Кластеризация с использованием найденного числа кластеров
+			var kmeans = new KMeans(optimalK);
 			var clusters = kmeans.Learn(data.ToJagged());
 			var labels = clusters.Decide(data.ToJagged());
 
 			var resultClusters = new List<double[]>();
-			for (int i = 0; i < nClusters; i++)
+			for (int i = 0; i < optimalK; i++)
 			{
 				var clusterData = data.Where((_, index) => labels[index] == i).ToArray();
 				resultClusters.Add(clusterData);
@@ -131,63 +202,90 @@ namespace ClassLibrary
 		}
 
 		/// <summary>
-		/// Метод для определения эмпирической CDF.
+		/// Эмпирическая функция распределения (CDF).
 		/// </summary>
-		/// <param name="data"></param>
-		/// <param name="x"></param>
-		/// <returns></returns>
+		/// <param name="data">Массив данных.</param>
+		/// <param name="x">Значение для расчета CDF.</param>
+		/// <returns>Значение CDF.</returns>
 		private static double EmpiricalCDF(double[] data, double x)
 		{
 			return data.Count(v => v <= x) / (double)data.Length;
 		}
 
+		
+
 		/// <summary>
 		/// Метод оптимизации весов распределений.
 		/// </summary>
-		/// <param name="data">Массив значений.</param>
-		/// <param name="clusters">Листы кластеров.</param>
-		/// <param name="distributions">Лист распределений.</param>
-		/// <returns></returns>
-		/// <exception cref="InvalidOperationException"></exception>
-		public static (double[] Weights, double Deviation) OptimizeWeights(double[] data, List<double[]> clusters, List<object> distributions)
+		/// <param name="data">Массив данных для анализа.</param>
+		/// <param name="clusters">Список кластеров.</param>
+		/// <param name="distributions">Список распределений (параметры и тип).</param>
+		/// <returns>Оптимальные веса и минимальное отклонение (KS-статистика).</returns>
+		/// <exception cref="InvalidOperationException">Если оптимизация не удалась.</exception>
+		public static (double[] Weights, double Deviation) OptimizeWeights(
+			double[] data,
+			List<double[]> clusters,
+			List<object> distributions)
 		{
 			int nClusters = clusters.Count;
 
-			// Функция ошибки
+			// Определение функции ошибки
 			Func<double[], double> errorFunction = weights =>
 			{
 				Func<double, double> combinedCDF = x =>
-					weights.Zip(distributions, (w, dist) =>
+				{
+					double sum = 0.0;
+					for (int i = 0; i < nClusters; i++)
 					{
-						if (dist is NormalDistribution normal)
-							return w * normal.DistributionFunction(x);
-						else if (dist is ExponentialDistribution exponential)
-							return w * exponential.DistributionFunction(x);
-						else if (dist is UniformContinuousDistribution uniform)
-							return w * uniform.DistributionFunction(x);
-						return 0.0;
-					}).Sum();
+						if (distributions[i] is NormalDistribution normal)
+						{
+							sum += weights[i] * normal.DistributionFunction(x);
+						}
+						else if (distributions[i] is ExponentialDistribution exponential)
+						{
+							sum += weights[i] * exponential.DistributionFunction(x);
+						}
+						else if (distributions[i] is UniformContinuousDistribution uniform)
+						{
+							sum += weights[i] * uniform.DistributionFunction(x);
+						}
+					}
+					return sum;
+				};
 
+				// Максимальная ошибка между эмпирическим CDF и комбинированным CDF
 				return data.Select(x => Math.Abs(combinedCDF(x) - EmpiricalCDF(data, x))).Max();
 			};
 
-			// Начальные веса (равномерные)
-			var weights = Enumerable.Repeat(1.0 / nClusters, nClusters).ToArray();
+			// Начальные веса (равномерное распределение)
+			double[] initialWeights = Enumerable.Repeat(1.0 / nClusters, nClusters).ToArray();
 
-			// Оптимизация с использованием ConjugateGradient
-			var optimizer = new ConjugateGradient(nClusters)
+			Func<double[], double> errorWithPenalty = weights =>
 			{
-				Function = errorFunction,
-				Tolerance = 1e-6,
-				MaxIterations = 1000
+				double error = errorFunction(weights);
+
+				// Штраф за веса вне диапазона [0, 1]
+				double penalty = weights.Where(w => w < 0 || w > 1).Sum(w => Math.Abs(w) * 100);
+
+				// Штраф за сумму весов, не равную 1
+				penalty += Math.Abs(weights.Sum() - 1) * 100;
+
+				return error + penalty;
 			};
 
-			bool success = optimizer.Minimize(weights);
+			// Оптимизация с использованием Accord.NET (Cobyla)
+			var optimizer = new Cobyla(new NonlinearObjectiveFunction(nClusters, errorWithPenalty));
 
-			if (!success)
+			bool success = optimizer.Minimize(initialWeights);
+
+			if (success)
+			{
+				return (optimizer.Solution, optimizer.Value);
+			}
+			else
+			{
 				throw new InvalidOperationException("Оптимизация не удалась.");
-
-			return (weights, optimizer.Value);
+			}
 		}
 
 		/// <summary>
@@ -208,11 +306,11 @@ namespace ClassLibrary
 			int currentStep = 0;
 
 			// Определение оптимального числа кластеров
-			int optimalK = FindOptimalNumberCluster(data);
+			//int optimalK = FindOptimalNumberCluster(data);
 			progress?.Report((++currentStep * 100) / totalSteps);
 
 			// Кластеризация данных
-			var (clusters, centroids) = ClusterData(data, optimalK);
+			var (clusters, centroids) = ClusterData(data, 8);
 			progress?.Report((++currentStep * 100) / totalSteps);
 
 			var results = new List<ClusterAnalysisResult>();
@@ -242,20 +340,23 @@ namespace ClassLibrary
 			{
 				string paramsDescription = distributions[i] switch
 				{
-					NormalDistribution normal => $"µ={normal.Mean}, σ={normal.StandardDeviation}",
-					ExponentialDistribution exponential => $"λ={exponential.Rate}",
-					UniformContinuousDistribution uniform => $"Min={uniform.Minimum}, Max={uniform.Maximum}",
+					NormalDistribution normal => $"µ={Math.Round(normal.Mean, 2)}, " +
+					$"σ={Math.Round(normal.StandardDeviation, 2)}",
+					ExponentialDistribution exponential => $"λ={Math.Round(exponential.Rate, 2)}",
+					UniformContinuousDistribution uniform => $"Min={Math.Round(uniform.Minimum, 2)}, " +
+					$"Max={Math.Round(uniform.Maximum, 2)}",
 					_ => "Неизвестно"
 				};
 
 				results.Add(new ClusterAnalysisResult
 				{
 					ClusterNumber = i + 1,
-					Interval = $"[{clusters[i].Min()}, {clusters[i].Max()}]",
-					Weight = weights[i],
-					Distribution = distributions[i].GetType().Name,
+					//Interval = $"[{clusters[i].Min()}, {clusters[i].Max()}]",
+					Weight = Math.Round(weights[i], 2),
+					Distribution = DistributionNames.TryGetValue(distributions[i].
+					GetType().Name, out var name) ? name : "Неизвестно",
 					Parameters = paramsDescription,
-					Deviation = stats[i]
+					Deviation = Math.Round(stats[i], 2)
 				});
 
 				progress?.Report((++currentStep * 100) / totalSteps);
@@ -267,80 +368,27 @@ namespace ClassLibrary
 			return results;
 		}
 
+		private static Dictionary<string, string> DistributionNames = new Dictionary<string, string>
+		{
+			{ nameof(NormalDistribution), "Нормальный закон" },
+			{ nameof(ExponentialDistribution), "Экспоненциальный закон" },
+			{ nameof(UniformContinuousDistribution), "Равномерное распределение" }
+		};
+
 		// DTO для представления результатов анализа
 		public class ClusterAnalysisResult
 		{
 			public int ClusterNumber { get; set; }
-			public string Interval { get; set; }
+
+			//public string Interval { get; set; }
+
 			public double Weight { get; set; }
+
 			public string Distribution { get; set; }
+
 			public string Parameters { get; set; }
+
 			public double Deviation { get; set; }
 		}
-
-
-
-
-
-		///// <summary>
-		///// Метод определения закона распределения.
-		///// </summary>
-		///// <param name="data">Массив значений.</param>
-		///// <param name="maxDeviation">Величина максимального отклонения.</param>
-		///// <returns>Лист результатов.</returns>
-		///// <exception cref="Exception">Исключение, возникающее при не достижении 
-		///// величины maxDeviation.</exception>
-		//public static List<ClusterAnalysisResult> AnalyzeDistribution(double[] data, double maxDeviation = 0.1)
-		//{
-		//	// Определение оптимального числа кластеров
-		//	int optimalK = FindOptimalNumberCluster(data);
-
-		//	var (clusters, centroids) = ClusterData(data, optimalK);
-
-		//	var results = new List<ClusterAnalysisResult>();
-		//	var distributions = new List<object>();
-		//	var stats = new List<double>();
-
-		//	// Анализ кластеров
-		//	foreach (var cluster in clusters)
-		//	{
-		//		var (bestDist, bestParams, bestStat) = FitDistribution(cluster);
-		//		distributions.Add(bestParams);
-		//		stats.Add(bestStat);
-		//	}
-
-		//	// Оптимизация весов
-		//	var (weights, deviation) = OptimizeWeights(data, clusters, distributions);
-
-		//	if (deviation > maxDeviation)
-		//	{
-		//		throw new Exception($"Не удалось достичь отклонения < {maxDeviation}. " +
-		//			$"Текущее отклонение: {deviation}");
-		//	}
-
-		//	// Формирование результатов
-		//	for (int i = 0; i < clusters.Count; i++)
-		//	{
-		//		string paramsDescription = distributions[i] switch
-		//		{
-		//			NormalDistribution normal => $"µ={normal.Mean}, σ={normal.StandardDeviation}",
-		//			ExponentialDistribution exponential => $"λ={exponential.Rate}",
-		//			UniformContinuousDistribution uniform => $"Min={uniform.Minimum}, Max={uniform.Maximum}",
-		//			_ => "Неизвестно"
-		//		};
-
-		//		results.Add(new ClusterAnalysisResult
-		//		{
-		//			ClusterNumber = i + 1,
-		//			Interval = $"[{clusters[i].Min()}, {clusters[i].Max()}]",
-		//			Weight = weights[i],
-		//			Distribution = distributions[i].GetType().Name,
-		//			Parameters = paramsDescription,
-		//			Deviation = stats[i]
-		//		});
-		//	}
-
-		//	return results;
-		//}
 	}
 }
